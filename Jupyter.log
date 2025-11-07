@@ -1,0 +1,75 @@
+Cursor (1.99.3, undefined, desktop)
+Jupyter Extension Version: 2025.3.0.
+Python Extension Version: 2025.6.1.
+Pylance Extension not installed.
+Platform: win32 (x64).
+Home = c:\Users\Development
+Temp Storage folder /c:/Users/Development/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0
+Workspace folder /c:/Users/Development/Documents/GitHub/strongsBibleConcordence
+13:50:17.350 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}
+13:50:20.360 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}
+13:50:45.075 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}
+13:50:45.133 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}
+13:51:06.613 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}
+13:52:19.603 [warn] No interpreter with path c:\Users\~\Documents\GitHub\strongsBibleConcordence/.venv/Scripts/python.exe found in Python API, will convert Uri path to string as Id c:\Users\~\Documents\GitHub\strongsBibleConcordence/.venv/Scripts/python.exe
+13:52:19.604 [error] Failure in listKernelsImplementation [Error: /c:/Users/~/AppData/Roaming/Cursor/User/globalStorage/ms-toolsai.jupyter/version-2025.3.0/jupyter/kernels contains invalid WIN32 path characters.
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:9:10110)
+	at c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37535
+	at new Promise (<anonymous>)
+	at Object.mM (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:8:37435)
+	at qc.createDirectory (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:236:15667)
+	at Lr.getKernelSpecTempRegistrationFolder (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:277:5405)
+	at async Promise.all (index 0)
+	at async N_.listKernelSpecsImpl (c:\Users\~\.cursor\extensions\ms-toolsai.jupyter-2025.3.0-universal\dist\extension.node.js:296:21158)] {
+  code: 'EINVAL'
+}

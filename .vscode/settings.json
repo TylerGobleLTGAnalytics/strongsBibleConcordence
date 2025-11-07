@@ -1,0 +1,25 @@
+{
+  // Python interpreter settings - tells Cursor which Python to use
+  // Using Windows-style backslashes to avoid path resolution issues
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+  
+  // Jupyter extension settings for Cursor IDE
+  // Use local Jupyter server (automatically started by Cursor)
+  "jupyter.jupyterServerType": "local",
+  
+  // Trust the venv kernel to avoid security prompts
+  "jupyter.kernels.trusted": [
+    "venv"
+  ],
+  
+  // Python extension settings - helps with kernel discovery
+  "python.terminal.activateEnvironment": true,
+  
+  // Override the problematic temp storage path that uses ~
+  // This forces Jupyter to use a valid Windows path
+  "jupyter.kernelspec.tempDirectory": "${env:APPDATA}\\Cursor\\User\\globalStorage\\ms-toolsai.jupyter\\version-2025.3.0\\jupyter\\kernels",
+  "jupyter.kernels.excludePythonEnvironments": [
+    "${workspaceFolder}\\.venv"
+  ]
+}
+
