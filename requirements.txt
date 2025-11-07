@@ -1,0 +1,26 @@
+# Core data manipulation library
+# pandas: Used for creating and working with DataFrames (tables of data)
+# Note: numpy is automatically installed as a dependency of pandas
+pandas>=2.0.0
+
+# Jupyter notebook support
+# jupyter: Allows you to run and interact with Jupyter notebooks
+jupyter>=1.0.0
+
+# Jupyter kernel for Python
+# ipykernel: Provides the Python kernel for Jupyter notebooks
+ipykernel>=6.0.0
+
+# Web requests library
+# requests: For downloading files from the internet (GitHub repository)
+requests>=2.28.0
+
+# HTML/XML parsing library
+# beautifulsoup4: For parsing HTML/XHTML content from Strong's dictionary files
+beautifulsoup4>=4.11.0
+lxml>=4.9.0
+
+# Note: The following modules are built-in Python modules and don't need to be installed:
+# - json (for reading JSON files)
+# - re (for regular expressions/pattern matching)
+# - os (for file operations)
