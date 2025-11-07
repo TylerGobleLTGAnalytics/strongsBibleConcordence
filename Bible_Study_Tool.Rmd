@@ -1,0 +1,392 @@
+---
+title: "Bible Study Tool"
+subtitle: "ASV with Strong’s (Enhanced)"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    theme: bslib::bs_theme(
+      version = 5,
+      bootswatch = "flatly",
+      primary = "#6f4ef2",
+      secondary = "#6c757d",
+      success = "#3cb371",
+      info = "#1f9bcf",
+      warning = "#f4a259",
+      danger = "#e4572e",
+      base_font = bslib::font_google("Inter"),
+      heading_font = bslib::font_google("Playfair Display"),
+      code_font = bslib::font_google("JetBrains Mono")
+    )
+    toc: true
+    toc_float: true
+    number_sections: false
+    code_folding: hide
+    df_print: paged
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%",
+  fig.retina = 2
+)
+```
+
+```{r packages}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(DT)
+  library(jsonlite)
+  library(purrr)
+  library(tidyr)
+  library(stringr)
+  library(glue)
+  library(bslib)
+  library(htmltools)
+  library(htmlwidgets)
+})
+```
+
+<!-- Meta and favicon -->
+```{r meta, results='asis'}
+cat('
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E📖%3C/text%3E%3C/svg%3E">
+')
+```
+
+<!-- Page styles (kept inline so the HTML is portable) -->
+```{r styles, results='asis'}
+css <- '
+:root {
+  --hero-bg: radial-gradient(1200px 600px at 10% 0%, #efeaff 0%, #ffffff 60%);
+}
+body {
+  line-height: 1.6;
+}
+.hero {
+  background: var(--hero-bg);
+  border-radius: 1.25rem;
+  padding: 2.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(111,78,242,0.12);
+}
+.hero h1, .hero h2, .hero h3 {
+  margin: 0 0 .35rem 0;
+}
+.hero p.lead {
+  font-size: 1.05rem;
+  margin: .25rem 0 0 0;
+  color: #444;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: .75rem;
+  margin-top: 1rem;
+}
+.metric {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 1rem;
+  padding: .9rem 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,.04);
+}
+.metric h4 {
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  font-weight: 700; margin: 0; font-size: 1.35rem;
+}
+.metric small { color:#666 }
+.tag {
+  display:inline-block; padding:.18rem .55rem; margin:.12rem .25rem .12rem 0;
+  font-size:.84rem; border-radius:999px; border:1px solid rgba(111,78,242,.25);
+  background:rgba(111,78,242,.06); color:#2b1b80; text-decoration:none;
+}
+.tag:hover { background:rgba(111,78,242,.12); border-color:rgba(111,78,242,.5) }
+blockquote {
+  background: #f9fafc; border-left: 4px solid #6f4ef2; padding: .8rem 1rem; border-radius:.5rem;
+}
+.section-note {
+  background: #f7fbff; border:1px solid rgba(31,155,207,.2); border-radius: .9rem; padding: 1rem 1.1rem;
+}
+hr.faint { border: none; border-top:1px dashed rgba(0,0,0,.12); margin: 1.5rem 0; }
+
+/* DataTables polish */
+.dataTables_wrapper .dt-buttons .btn { border-radius: 999px; }
+table.dataTable tbody tr { line-height: 1.25rem; }
+table.dataTable thead th, table.dataTable thead td { border-bottom: 1px solid rgba(0,0,0,.1); }
+div.dtsp-panel { border-radius: .75rem !important; }
+.dtsp-searchPane { border-radius: .75rem !important; }
+.fixedHeader-floating { border-radius: .6rem; }
+
+/* Floating back-to-top */
+#backToTop {
+  position: fixed; right: 18px; bottom: 18px; display: none; z-index: 9999;
+  border: none; border-radius: 999px; padding: .6rem .8rem; font-weight:600;
+  background: #6f4ef2; color: #fff; box-shadow: 0 6px 18px rgba(111,78,242,.35);
+}
+#backToTop:hover { filter: brightness(1.05); }
+'
+htmltools::tags$style(HTML(css))
+```
+
+## Overview
+
+<div class="hero">
+  <h1 class="display-6">Bible Study Tool</h1>
+  <p class="lead">Explore the ASV text with Strong’s numbers and enhanced glosses. Filter by book, chapter, or Strong’s code, and export selections for deeper study.</p>
+  <div class="metrics">
+    <div class="metric">
+      <h4 id="m-verses">—</h4>
+      <small>Total verses</small>
+    </div>
+    <div class="metric">
+      <h4 id="m-books">—</h4>
+      <small>Books</small>
+    </div>
+    <div class="metric">
+      <h4 id="m-unique">—</h4>
+      <small>Unique Strong’s codes</small>
+    </div>
+    <div class="metric">
+      <h4 id="m-avg">—</h4>
+      <small>Avg. codes / verse</small>
+    </div>
+  </div>
+</div>
+
+> Tip: you can pre-filter via URL. For example, append `?q=H430` to search for a specific Strong’s code.
+
+---
+ 
+## Load data
+
+```{r data}
+# Read your CSV
+asvs_strongs_enhanced <- readr::read_csv(
+  "GitHub/strongsBibleConcordence/asvs_strongs_enhanced.csv",
+  show_col_types = FALSE
+)
+
+# Helper: parse the Python-like list strings into proper R lists
+parse_list <- function(x) {
+  if (is.na(x) || !nzchar(x)) return(list(character()))
+  # Replace single quotes with double, ensure JSON compatibility
+  x <- gsub("'", '"', x, fixed = TRUE)
+  out <- tryCatch(jsonlite::fromJSON(x), error = function(e) character())
+  as.list(out)
+}
+
+# Build verse reference and linkable Strong's tags
+display_df <- asvs_strongs_enhanced %>%
+  mutate(
+    verse_ref = glue("{book_name} {chapter}:{verse}"),
+    strongs_list = map(strongs, parse_list),
+    defs_list    = map(strongs_enhanced, parse_list),
+    strongs_tags = map_chr(strongs_list, ~{
+      codes <- .x %>% unlist()
+      if (length(codes) == 0) return("")
+      paste0(
+        vapply(
+          codes,
+          function(code) glue('<a class="tag" href="https://www.blueletterbible.org/lexicon/{tolower(code)}/kjv/wlc/0-1/" target="_blank" rel="noopener">{code}</a>'),
+          FUN.VALUE = character(1)
+        ),
+        collapse = " "
+      )
+    })
+  ) %>%
+  select(
+    Book = book_name,
+    Chapter = chapter,
+    Verse = verse,
+    Reference = verse_ref,
+    `Plain Text` = plain_text,
+    `Enhanced (with glosses)` = text_enhanced,
+    `Strong\'s Count` = strongs_count,
+    `Strong\'s` = strongs_tags,
+    strongs_list, defs_list   # keep for later index build (hidden)
+  )
+
+# Quick stats for hero metrics
+n_verses <- nrow(display_df)
+n_books  <- n_distinct(display_df$Book)
+
+# Unique Strong's across the corpus
+all_codes <- display_df$strongs_list %>%
+  flatten_chr() %>%
+  unique()
+n_unique <- length(all_codes)
+
+avg_codes <- mean(asvs_strongs_enhanced$strongs_count, na.rm = TRUE) %>% round(2)
+```
+
+```{r metrics-js, results='asis'}
+htmltools::tags$script(HTML(glue("
+document.addEventListener('DOMContentLoaded', function(){{
+  document.getElementById('m-verses').textContent = '{format(n_verses, big.mark=",")}';
+  document.getElementById('m-books').textContent = '{n_books}';
+  document.getElementById('m-unique').textContent = '{format(n_unique, big.mark=",")}';
+  document.getElementById('m-avg').textContent = '{avg_codes}';
+}});
+")))
+```
+
+## Read & filter verses
+
+```{r verses-table}
+# Build the main interactive table
+DT::datatable(
+  display_df %>% select(Book, Chapter, Verse, Reference, `Plain Text`, `Enhanced (with glosses)`, `Strong\'s Count`, `Strong\'s`),
+  rownames = FALSE,
+  escape = FALSE, # allow HTML tags for Strong's chips
+  filter = "top",
+  options = list(
+    deferRender = TRUE,
+    scrollY = 600,
+    scroller = TRUE,
+    fixedHeader = TRUE,
+    dom = "PBfrtip",
+    pageLength = 25,
+    lengthMenu = list(c(10, 25, 50, 100, -1), c("10", "25", "50", "100", "All")),
+    buttons = list(
+      list(extend = "copy", title = "Bible Study Tool"),
+      list(extend = "csv", title = "bible_study_tool"),
+      list(extend = "excel", title = "bible_study_tool"),
+      list(extend = "pdf", title = "bible_study_tool", orientation = "landscape", pageSize = "A4"),
+      list(extend = "print", title = "Bible Study Tool")
+    ),
+    extensions = c("Buttons", "FixedHeader", "Scroller", "ColReorder", "SearchPanes"),
+    searchPanes = list(
+      cascadePanes = TRUE,
+      viewTotal = TRUE,
+      layout = "columns-3",
+      # Enable panes for Book and Chapter; others through global search
+      columns = c(0, 1)
+    ),
+    columnDefs = list(
+      list(searchPanes = list(show = TRUE), targets = c(0,1)),
+      list(orderable = FALSE, targets = 7) # Strong's chips column not sortable
+    )
+  ),
+  elementId = "verses_table",
+  class = "stripe hover row-border order-column"
+) %>%
+  # Prefill search from URL param ?q= (works for Strong's code, book, etc.)
+  DT::formatStyle(0, target = "row") %>%
+  htmlwidgets::onRender("
+    function(el, x) {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q');
+      if (q) {
+        const tbl = $(el).DataTable();
+        tbl.search(q).draw();
+      }
+      // Placeholder text for global search input
+      setTimeout(function(){
+        const wrapper = $(el).closest('.dataTables_wrapper')[0];
+        if(!wrapper) return;
+        const search = wrapper.querySelector('input[type=search]');
+        if (search) search.placeholder = 'Search by text, book, or Strong\\'s code (e.g., H430)…';
+      }, 0);
+    }
+  ")
+```
+
+---
+
+## Strong’s Index (auto-generated)
+
+This index is derived from the CSV on the fly—counts each Strong’s code across all verses and shows the most common first. Click a code to jump to an external lexicon entry.
+
+```{r strongs-index}
+# Build a long table of codes with their (first-found) gloss text
+index_df <- display_df %>%
+  mutate(row_id = row_number()) %>%
+  mutate(
+    code_def_pairs = pmap(
+      list(strongs_list, defs_list),
+      function(codes, defs) {
+        codes <- unlist(codes); defs <- unlist(defs)
+        if (length(codes) == 0) return(tibble(code = character(), def = character()))
+        # align length differences conservatively
+        n <- min(length(codes), length(defs))
+        tibble(code = codes[seq_len(n)], def = defs[seq_len(n)])
+      }
+    )
+  ) %>%
+  select(row_id, Book, Chapter, Verse, code_def_pairs) %>%
+  unnest(code_def_pairs) %>%
+  group_by(code) %>%
+  summarize(
+    Occurrences = n(),
+    Example = first(glue("{Book} {Chapter}:{Verse}")),
+    Definition = first(def),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(Occurrences)) %>%
+  mutate(
+    `Strong\'s` = glue('<a class=\"tag\" href=\"https://www.blueletterbible.org/lexicon/{tolower(code)}/kjv/wlc/0-1/\" target=\"_blank\" rel=\"noopener\">{code}</a>')
+  ) %>%
+  select(`Strong\'s`, Occurrences, Example, Definition)
+
+DT::datatable(
+  index_df,
+  rownames = FALSE,
+  escape = FALSE,
+  filter = "top",
+  options = list(
+    pageLength = 25,
+    dom = "Bfrtip",
+    buttons = list(
+      list(extend = "copy", title = "strongs_index"),
+      list(extend = "csv", title = "strongs_index"),
+      list(extend = "excel", title = "strongs_index")
+    ),
+    order = list(list(1, "desc"))
+  ),
+  elementId = "strongs_index",
+  class = "stripe hover row-border"
+)
+```
+
+---
+
+## Notes
+
+<div class="section-note">
+  <ul>
+    <li><strong>Export:</strong> Use the buttons above each table to copy or download your filtered results.</li>
+    <li><strong>Deep links:</strong> Add <code>?q=H7225</code> (or any text) to the URL to pre-search the verses table.</li>
+    <li><strong>Attribution:</strong> Scripture is ASV; Strong’s numbers &amp; glosses derived from your CSV.</li>
+  </ul>
+</div>
+
+```{r back-to-top, results='asis'}
+htmltools::tags$button(id="backToTop", "Top")
+```
+
+```{r back-to-top-script, results='asis'}
+htmltools::tags$script(HTML("
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) { btn.style.display = 'block'; }
+    else { btn.style.display = 'none'; }
+  });
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+"))
+```
+
+---
+
+### How to publish this as a web page (GitHub Pages)
+
+1. Save this file as `index.Rmd` in your repo (keep the CSV path the same).
+2. Knit to HTML in RStudio: **Knit ▶ index.html**.
+3. Commit and push the generated `index.html` plus any referenced assets.
+4. In your GitHub repo: **Settings ▶ Pages ▶ Build and deployment ▶ Source = Deploy from a branch**.
+   - Choose the branch (e.g., `main`) and folder (root if `index.html` is in root, or `docs` if you prefer that).
+5. Save. Your site will appear at `https://<username>.github.io/<repo>/`.
